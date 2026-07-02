@@ -26,6 +26,7 @@ public class BasePage {
             Duration.ofSeconds(Long.parseLong(ConfigReader.getProperty("timeout"))));
         PageFactory.initElements(driver, this);
     }
+
     
     /**
      * Wait for element to be visible
