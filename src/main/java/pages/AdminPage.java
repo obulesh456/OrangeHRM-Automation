@@ -62,7 +62,6 @@ public class AdminPage extends BasePage {
     public AdminPage(WebDriver driver) {
         super(driver);
     }
-
     /**
      * Verify Admin page is displayed
      * @return true if admin page is displayed
