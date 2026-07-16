@@ -97,7 +97,16 @@ public class DashboardPage extends BasePage {
     public void navigateToMyInfo() {
         click(myInfoMenu, "My Info menu");
     }
-    
+
+    /**
+     * Navigate to Recruitment module
+     * @return RecruitmentPage
+     */
+    public RecruitmentPage navigateToRecruitment() {
+        click(recruitmentMenu, "Recruitment menu");
+        return new RecruitmentPage(driver);
+    }
+
     /**
      * Perform logout
      * @return LoginPage
