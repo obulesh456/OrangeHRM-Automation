@@ -12,16 +12,16 @@ import utils.LoggerUtils;
 public class PIMPage extends BasePage {
     
     // Page Elements
-    @FindBy(css = "h6.oxd-topbar-header-breadcrumb-module")
+    @FindBy(xpath = "//h6[contains(@class, 'oxd-topbar-header-breadcrumb-module')]")
     private WebElement pimHeader;
     
-    @FindBy(css = "button.oxd-button--secondary")
+    @FindBy(xpath = "//button[contains(@class, 'oxd-button--secondary') and contains(., 'Add')]")
     private WebElement addEmployeeButton;
     
     @FindBy(xpath = "//input[@placeholder='Type for hints...']")
     private WebElement employeeNameSearchField;
     
-    @FindBy(css = "button[type='submit']")
+    @FindBy(xpath = "//form//button[@type='submit']")
     private WebElement searchButton;
     
     @FindBy(className = "oxd-table-card")
@@ -36,7 +36,7 @@ public class PIMPage extends BasePage {
     @FindBy(name = "lastName")
     private WebElement lastNameField;
     
-    @FindBy(css = "button[type='submit']")
+    @FindBy(xpath = "//form//button[@type='submit' and contains(., 'Save')]")
     private WebElement saveButton;
     
     @FindBy(className = "oxd-toast-content-text")
@@ -75,8 +75,11 @@ public class PIMPage extends BasePage {
         LoggerUtils.info("Adding employee: " + firstName + " " + middleName + " " + lastName);
         clickAddEmployee();
         type(firstNameField, firstName, "First Name field");
+        waitForSeconds(1);
         type(middleNameField, middleName, "Middle Name field");
+        waitForSeconds(1);
         type(lastNameField, lastName, "Last Name field");
+        waitForSeconds(1);
         click(saveButton, "Save button");
     }
     
@@ -88,11 +91,25 @@ public class PIMPage extends BasePage {
         type(employeeNameSearchField, employeeName, "Employee name search field");
         click(searchButton, "Search button");
     }
+
+    private void waitForSeconds(int seconds) {
+        try {
+            Thread.sleep(seconds * 1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
     
     /**
      * Get success message
      */
     public String getSuccessMessage() {
-        return getText(successMessage, "Success message");
+        try {
+            waitForElementVisible(successMessage);
+            return getText(successMessage, "Success message");
+        } catch (Exception e) {
+            LoggerUtils.warn("Success message not found: " + e.getMessage());
+            return "";
+        }
     }
 }
