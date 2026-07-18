@@ -21,6 +21,7 @@ public class AdminTests extends BaseTest {
         String username = ConfigReader.getProperty("valid.username");
         String password = ConfigReader.getProperty("valid.password");
 
+
         DashboardPage dashboardPage = loginPage.login(username, password);
         ExtentReportManager.getTest().log(Status.INFO, "Logged in successfully");
 
