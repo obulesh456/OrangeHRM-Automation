@@ -46,6 +46,7 @@ public class PIMPage extends BasePage {
     public PIMPage(WebDriver driver) {
         super(driver);
     }
+
     
     /**
      * Verify PIM page is displayed
