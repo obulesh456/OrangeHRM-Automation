@@ -62,6 +62,7 @@ public class RecruitmentPage extends BasePage {
 
     @FindBy(css = "p.oxd-text--toast-message")
     private WebElement successMessage;
+
     
     // Constructor
     public RecruitmentPage(WebDriver driver) {

@@ -23,6 +23,7 @@ public class RecruitmentTests extends BaseTest {
         LoginPage loginPage = new LoginPage(driver);
         String username = ConfigReader.getProperty("valid.username");
         String password = ConfigReader.getProperty("valid.password");
+
         
         DashboardPage dashboardPage = loginPage.login(username, password);
         ExtentReportManager.getTest().log(Status.INFO, "Logged in successfully");
