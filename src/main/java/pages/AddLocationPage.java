@@ -12,7 +12,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
 
-public class ADDLOCATIONPAGE {
+public class AddLocationPage {
 
     private WebDriver driver;
     private WebDriverWait wait;
@@ -30,8 +30,10 @@ public class ADDLOCATIONPAGE {
     @FindBy(xpath = "//button[@type='button' and normalize-space()='Add']")
     private WebElement addButton;
 
-    // Dynamic (shown directly or under "More") -> keep By
-    private By organizationTab = By.xpath("//*[contains(@class,'oxd-topbar-body-nav-tab') and normalize-space()='Organization' or contains(@class,'oxd-topbar-body-nav-tab-item') and normalize-space()='Organization']");
+    // Dynamic (shown directly or under "More") -> keep By (parentheses fix operator precedence)
+    private By organizationTab = By.xpath(
+            "//*[(contains(@class,'oxd-topbar-body-nav-tab') or contains(@class,'oxd-topbar-body-nav-tab-item')) and normalize-space()='Organization']"
+    );
 
     // 2. Form Locators (static -> @FindBy)
     @FindBy(xpath = "//label[contains(normalize-space(.),'Name')]/ancestor::div[contains(@class,'oxd-input-group')]//input")
@@ -72,7 +74,7 @@ public class ADDLOCATIONPAGE {
     private By toastMessageText = By.xpath("//div[contains(@class,'oxd-toast--success')]//p[contains(@class,'oxd-text--toast-message')]");
 
     // 4. Constructor
-    public ADDLOCATIONPAGE(WebDriver driver) {
+    public AddLocationPage(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(30));
         PageFactory.initElements(driver, this);
@@ -97,10 +99,9 @@ public class ADDLOCATIONPAGE {
     }
 
     private void typeText(WebElement element, String text) {
-        wait.until(ExpectedConditions.visibilityOf(element));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", element);
-        element.clear();
-        element.sendKeys(text);
+        WebElement target = waitAndScroll(element);
+        target.clear();
+        target.sendKeys(text);
     }
 
     // --- For By (dynamic elements) ---
