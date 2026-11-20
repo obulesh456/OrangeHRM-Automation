@@ -16,7 +16,7 @@ public class ADDLOCATIONPAGE {
     private WebDriverWait wait;
 
     // 1. Navigation Locators
-    private By adminMenu = By.xpath("//a[.//span[text()='Admin']]");
+    private By adminMenu = By.xpath("//a[.//span[normalize-space()='Admin']]");
     private By organizationTab = By.xpath("//span[contains(@class,'oxd-topbar-body-nav-tab-item') and normalize-space()='Organization']");
     private By locationsMenuItem = By.xpath("//a[@role='menuitem' and normalize-space()='Locations']");
     private By addButton = By.xpath("//button[@type='button' and normalize-space()='Add']");
@@ -41,20 +41,34 @@ public class ADDLOCATIONPAGE {
     // 4. Constructor
     public ADDLOCATIONPAGE(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(25));
     }
 
     // 5. Small Helper Methods
+    private WebElement waitAndScroll(By locator) {
+        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", element);
+        return wait.until(ExpectedConditions.elementToBeClickable(locator));
+    }
+
     private void clickElement(By locator) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
+        WebElement element = waitAndScroll(locator);
         try {
             element.click();
         } catch (Exception e) {
-            ((JavascriptExecutor) driver).executeScript(
-                    "arguments[0].scrollIntoView({block:'center'}); arguments[0].click();",
-                    element
-            );
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
+        }
+    }
+
+    private void clickMenuAndWaitForNext(By clickLocator, By nextLocator) {
+        for (int attempt = 0; attempt < 2; attempt++) {
+            clickElement(clickLocator);
+            try {
+                wait.until(ExpectedConditions.visibilityOfElementLocated(nextLocator));
+                return;
+            } catch (Exception ignored) {
+                // Retry clicking the menu once if the dropdown did not stay open
+            }
         }
     }
 
@@ -66,10 +80,11 @@ public class ADDLOCATIONPAGE {
 
     // 6. Navigation Method
     public void openAddLocationForm() {
-        clickElement(adminMenu);
-        clickElement(organizationTab);
-        clickElement(locationsMenuItem);
+        clickMenuAndWaitForNext(adminMenu, organizationTab);
+        clickMenuAndWaitForNext(organizationTab, locationsMenuItem);
+        clickMenuAndWaitForNext(locationsMenuItem, addButton);
         clickElement(addButton);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(nameInput));
     }
 
     // 7. Country Dropdown Method using findElements
