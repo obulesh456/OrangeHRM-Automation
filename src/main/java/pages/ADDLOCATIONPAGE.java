@@ -17,7 +17,8 @@ public class ADDLOCATIONPAGE {
 
     // 1. Navigation Locators
     private By adminMenu = By.xpath("//a[.//span[normalize-space()='Admin']]");
-    private By organizationTab = By.xpath("//span[contains(@class,'oxd-topbar-body-nav-tab-item') and normalize-space()='Organization']");
+    private By moreTab = By.xpath("//li[contains(@class,'oxd-topbar-body-nav-tab') and .//span[normalize-space()='More']]");
+    private By organizationTab = By.xpath("//*[contains(@class,'oxd-topbar-body-nav-tab') and normalize-space()='Organization' or contains(@class,'oxd-topbar-body-nav-tab-item') and normalize-space()='Organization']");
     private By locationsMenuItem = By.xpath("//a[@role='menuitem' and normalize-space()='Locations']");
     private By addButton = By.xpath("//button[@type='button' and normalize-space()='Add']");
 
@@ -41,7 +42,7 @@ public class ADDLOCATIONPAGE {
     // 4. Constructor
     public ADDLOCATIONPAGE(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(25));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(30));
     }
 
     // 5. Small Helper Methods
@@ -60,16 +61,12 @@ public class ADDLOCATIONPAGE {
         }
     }
 
-    private void clickMenuAndWaitForNext(By clickLocator, By nextLocator) {
-        for (int attempt = 0; attempt < 2; attempt++) {
-            clickElement(clickLocator);
-            try {
-                wait.until(ExpectedConditions.visibilityOfElementLocated(nextLocator));
-                return;
-            } catch (Exception ignored) {
-                // Retry clicking the menu once if the dropdown did not stay open
-            }
+    private void openOrganizationMenu() {
+        List<WebElement> directOrg = driver.findElements(organizationTab);
+        if (directOrg.isEmpty() || !directOrg.get(0).isDisplayed()) {
+            clickElement(moreTab);
         }
+        clickElement(organizationTab);
     }
 
     private void typeText(By locator, String text) {
@@ -80,9 +77,9 @@ public class ADDLOCATIONPAGE {
 
     // 6. Navigation Method
     public void openAddLocationForm() {
-        clickMenuAndWaitForNext(adminMenu, organizationTab);
-        clickMenuAndWaitForNext(organizationTab, locationsMenuItem);
-        clickMenuAndWaitForNext(locationsMenuItem, addButton);
+        clickElement(adminMenu);
+        openOrganizationMenu();
+        clickElement(locationsMenuItem);
         clickElement(addButton);
         wait.until(ExpectedConditions.visibilityOfElementLocated(nameInput));
     }
