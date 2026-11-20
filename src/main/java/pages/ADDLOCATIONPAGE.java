@@ -19,7 +19,7 @@ public class ADDLOCATIONPAGE {
     private By adminMenu = By.xpath("//a[.//span[normalize-space()='Admin']]");
     private By moreTab = By.xpath("//li[contains(@class,'oxd-topbar-body-nav-tab') and .//span[normalize-space()='More']]");
     private By organizationTab = By.xpath("//*[contains(@class,'oxd-topbar-body-nav-tab') and normalize-space()='Organization' or contains(@class,'oxd-topbar-body-nav-tab-item') and normalize-space()='Organization']");
-    private By locationsMenuItem = By.xpath("//a[@role='menuitem' and normalize-space()='Locations']");
+    private By locationsMenuItem = By.xpath("//a[normalize-space()='Locations']");
     private By addButton = By.xpath("//button[@type='button' and normalize-space()='Add']");
 
     // 2. Form Locators
@@ -71,6 +71,7 @@ public class ADDLOCATIONPAGE {
 
     private void typeText(By locator, String text) {
         WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", element);
         element.clear();
         element.sendKeys(text);
     }
@@ -91,7 +92,12 @@ public class ADDLOCATIONPAGE {
 
         for (WebElement option : options) {
             if (option.getText().trim().equalsIgnoreCase(countryName)) {
-                option.click();
+                ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", option);
+                try {
+                    option.click();
+                } catch (Exception e) {
+                    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", option);
+                }
                 break;
             }
         }
