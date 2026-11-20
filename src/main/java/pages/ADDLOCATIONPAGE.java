@@ -1,6 +1,7 @@
 package pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -16,7 +17,7 @@ public class ADDLOCATIONPAGE {
 
     // 1. Navigation Locators
     private By adminMenu = By.xpath("//a[.//span[text()='Admin']]");
-    private By organizationTab = By.xpath("//span[@class='oxd-topbar-body-nav-tab-item' and normalize-space()='Organization']");
+    private By organizationTab = By.xpath("//span[contains(@class,'oxd-topbar-body-nav-tab-item') and normalize-space()='Organization']");
     private By locationsMenuItem = By.xpath("//a[@role='menuitem' and normalize-space()='Locations']");
     private By addButton = By.xpath("//button[@type='button' and normalize-space()='Add']");
 
@@ -45,7 +46,15 @@ public class ADDLOCATIONPAGE {
 
     // 5. Small Helper Methods
     private void clickElement(By locator) {
-        wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
+        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
+        try {
+            element.click();
+        } catch (Exception e) {
+            ((JavascriptExecutor) driver).executeScript(
+                    "arguments[0].scrollIntoView({block:'center'}); arguments[0].click();",
+                    element
+            );
+        }
     }
 
     private void typeText(By locator, String text) {
