@@ -17,6 +17,9 @@ variables:
 steps:
   - checkout: self
 
+  - script: mkdir -p "$(MAVEN_CACHE_FOLDER)"
+    displayName: Create Maven cache directory
+
   - task: Cache@2
     displayName: Cache Maven dependencies
     inputs:
