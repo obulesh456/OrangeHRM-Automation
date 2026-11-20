@@ -41,11 +41,12 @@ public class ADDLOCATIONPAGE {
     // 4. Constructor
     public ADDLOCATIONPAGE(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(20));
     }
 
     // 5. Small Helper Methods
     private void clickElement(By locator) {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
         try {
             element.click();
