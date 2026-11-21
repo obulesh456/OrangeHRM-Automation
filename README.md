@@ -140,6 +140,12 @@ mvn clean test -Dheadless=true
 mvn clean test -Dtest=LoginTests
 ```
 
+## Azure DevOps Pipeline
+
+The `azure-pipelines.yml` pipeline runs on pushes to `main` and pull requests targeting `main`. It uses Java 11 and headless Chrome to run `mvn clean verify`, then publishes the JUnit-compatible TestNG results and the generated reports, screenshots, and logs as the `test-results` pipeline artifact.
+
+To enable it, create a pipeline in Azure DevOps for this repository and select the existing `azure-pipelines.yml` file. Subsequent pushes to `main` start the pipeline automatically.
+
 ## 📊 Test Reports
 
 After test execution, reports are generated in:

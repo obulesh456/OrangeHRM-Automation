@@ -29,11 +29,17 @@
         </classes>
     </test>
 
+    <test name="Add Location Tests">
+        <classes>
+            <class name="tests.AddLocationTest"/>
+            <class name="tests.AddLocationNegativeTest"/>
+        </classes>
+    </test>
+
     <test name="Recruitment Tests">
         <classes>
             <class name="tests.RecruitmentTests"/>
         </classes>
     </test>
-
 
 </suite>

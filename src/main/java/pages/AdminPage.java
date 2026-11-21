@@ -19,7 +19,6 @@ public class AdminPage extends BasePage {
     private WebElement addButton;
 
 
-
     @FindBy(xpath = "//input[@placeholder='Type for hints...']")
     private WebElement usernameSearchField;
 
