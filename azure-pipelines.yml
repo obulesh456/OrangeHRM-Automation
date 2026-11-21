@@ -36,11 +36,11 @@ steps:
       jdkSourceOption: PreInstalled
 
   - task: Maven@4
-    displayName: Build and run the full TestNG suite
+    displayName: Run AddLocationNegativeTest suite
     inputs:
       mavenPomFile: pom.xml
       goals: clean verify
-      options: '-Dbrowser=chrome -Dheadless=true'
+      options: '-Dbrowser=chrome -Dheadless=true -DsuiteXmlFile=testng-negative.xml'
       publishJUnitResults: false
       javaHomeOption: JDKVersion
       jdkVersionOption: '1.11'

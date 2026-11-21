@@ -1,0 +1,17 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Add Location Negative Suite" verbose="1" parallel="false" thread-count="1">
+
+    <parameter name="browser" value="edge"/>
+    <parameter name="url" value="https://opensource-demo.orangehrmlive.com/web/index.php/auth/login"/>
+
+    <listeners>
+        <listener class-name="listeners.TestListener"/>
+    </listeners>
+
+    <test name="Add Location Negative Tests">
+        <classes>
+            <class name="tests.AddLocationNegativeTest"/>
+        </classes>
+    </test>
+
+</suite>
