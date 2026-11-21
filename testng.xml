@@ -32,6 +32,7 @@
     <test name="Add Location Tests">
         <classes>
             <class name="tests.AddLocationTest"/>
+            <class name="tests.AddLocationNegativeTest"/>
         </classes>
     </test>
 
