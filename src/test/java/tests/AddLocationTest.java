@@ -11,11 +11,14 @@ import utils.ExtentReportManager;
 
 public class AddLocationTest extends BaseTest {
 
-    @Test(priority = 1, description = "Verify Adding a new location")
+    @Test(description = "Verify Admin can add a new location successfully")
     public void testAddLocation() {
-        ExtentReportManager.createTest("Add Location Test", "Verify admin can add a new location");
+        ExtentReportManager.createTest(
+                "Add Location Positive - Create New Location",
+                "Verify Admin logs in, opens Add Location form, fills valid details, saves, and sees confirmation"
+        );
 
-        // 1. Login first
+        // 1. Login with valid credentials
         LoginPage loginPage = new LoginPage(driver);
         String username = ConfigReader.getProperty("valid.username");
         String password = ConfigReader.getProperty("valid.password");
@@ -33,19 +36,22 @@ public class AddLocationTest extends BaseTest {
                 locationName,
                 "Hyderabad",
                 "Telangana",
-                "500081",
+                "500001",
                 "India",
-                "0401234567",
-                "0407654321",
-                "Gachibowli, Hyderabad",
-                "Main office location"
+                "+91-40-12345678",
+                "+91-40-87654321",
+                "Hitech City Road, Madhapur",
+                "Automated test location"
         );
-        ExtentReportManager.getTest().log(Status.INFO, "Submitted location details: " + locationName);
+        ExtentReportManager.getTest().log(Status.INFO, "Submitted location details for: " + locationName);
 
-        // 3. Real assertions after Save
-        Assert.assertTrue(addLocationPage.isSuccessToastDisplayed(), "Success toast should be displayed after saving location");
-        Assert.assertTrue(addLocationPage.getSuccessToastMessage().contains("Successfully Saved"), "Toast message should say Successfully Saved");
-        Assert.assertTrue(addLocationPage.isLocationPresentInPage(locationName), "Saved location name should be visible in Locations list");
-        ExtentReportManager.getTest().log(Status.PASS, "Verified toast and location in list: " + locationName);
+        // 3. Verify success toast and location in table
+        Assert.assertTrue(addLocationPage.isSuccessToastDisplayed(), "Success toast was not displayed");
+        Assert.assertTrue(
+                addLocationPage.getSuccessToastMessage().toLowerCase().contains("successfully saved"),
+                "Unexpected toast message: " + addLocationPage.getSuccessToastMessage()
+        );
+        Assert.assertTrue(addLocationPage.isLocationPresentInPage(locationName), "Created location not found in table");
+        ExtentReportManager.getTest().log(Status.PASS, "Verified location saved and listed: " + locationName);
     }
 }
