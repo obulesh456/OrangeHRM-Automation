@@ -171,4 +171,11 @@ public class AddLocationPage {
         WebElement cell = wait.until(ExpectedConditions.visibilityOfElementLocated(locationCell));
         return cell.isDisplayed();
     }
+
+    public String getFieldErrorMessage(String fieldLabel) {
+        By errorLocator = By.xpath("//label[contains(normalize-space(.),'" + fieldLabel + "')]/ancestor::div[contains(@class,'oxd-input-group')]//span[contains(@class,'oxd-input-field-error-message')]");
+        WebElement errorElement = wait.until(ExpectedConditions.visibilityOfElementLocated(errorLocator));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", errorElement);
+        return errorElement.getText().trim();
+    }
 }
