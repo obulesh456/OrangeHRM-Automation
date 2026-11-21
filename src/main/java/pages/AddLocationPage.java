@@ -10,7 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
 
-public class AddLocationPage {
+public class ADDLOCATIONPAGE {
 
     private WebDriver driver;
     private WebDriverWait wait;
@@ -40,7 +40,7 @@ public class AddLocationPage {
     private By toastMessageText = By.xpath("//div[contains(@class,'oxd-toast--success')]//p[contains(@class,'oxd-text--toast-message')]");
 
     // 4. Constructor
-    public AddLocationPage(WebDriver driver) {
+    public ADDLOCATIONPAGE(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(30));
     }
@@ -76,10 +76,6 @@ public class AddLocationPage {
         element.sendKeys(text);
     }
 
-    private By getFieldErrorLocator(String fieldLabel) {
-        return By.xpath("//label[contains(normalize-space(.),'" + fieldLabel + "')]/ancestor::div[contains(@class,'oxd-input-group')]//span[contains(@class,'oxd-input-field-error-message')]");
-    }
-
     // 6. Navigation Method
     public void openAddLocationForm() {
         clickElement(adminMenu);
@@ -89,7 +85,7 @@ public class AddLocationPage {
         wait.until(ExpectedConditions.visibilityOfElementLocated(nameInput));
     }
 
-    // 7. Country Dropdown Method
+    // 7. Country Dropdown Method using findElements
     public void selectCountry(String countryName) {
         clickElement(countryDropdown);
         List<WebElement> options = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(countryOptions));
@@ -159,7 +155,7 @@ public class AddLocationPage {
         clickSave();
     }
 
-    // 9. Verification Helper Methods (Positive & Negative)
+    // 9. Verification Helper Methods
     public boolean isSuccessToastDisplayed() {
         WebElement toast = wait.until(ExpectedConditions.visibilityOfElementLocated(successToast));
         return toast.isDisplayed();
@@ -174,17 +170,5 @@ public class AddLocationPage {
         By locationCell = By.xpath("//div[contains(@class,'oxd-table-body')]//div[normalize-space()='" + locationName + "']");
         WebElement cell = wait.until(ExpectedConditions.visibilityOfElementLocated(locationCell));
         return cell.isDisplayed();
-    }
-
-    public boolean isFieldErrorDisplayed(String fieldLabel) {
-        WebElement error = wait.until(ExpectedConditions.visibilityOfElementLocated(getFieldErrorLocator(fieldLabel)));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", error);
-        return error.isDisplayed();
-    }
-
-    public String getFieldErrorMessage(String fieldLabel) {
-        WebElement error = wait.until(ExpectedConditions.visibilityOfElementLocated(getFieldErrorLocator(fieldLabel)));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", error);
-        return error.getText().trim();
     }
 }
