@@ -20,7 +20,7 @@ public class RecruitmentTests extends BaseTest {
         ExtentReportManager.createTest("Recruitment Page Access Test", "Verify user can access Recruitment page");
         
         // Login first
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(getDriver());
         String username = ConfigReader.getProperty("valid.username");
         String password = ConfigReader.getProperty("valid.password");
         
@@ -45,7 +45,7 @@ public class RecruitmentTests extends BaseTest {
         ExtentReportManager.createTest("Add Candidate Test", "Verify admin can add a new candidate");
         
         // Login first
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(getDriver());
         String username = ConfigReader.getProperty("valid.username");
         String password = ConfigReader.getProperty("valid.password");
         
@@ -80,7 +80,7 @@ public class RecruitmentTests extends BaseTest {
             "Verify admin can add candidate with only required fields");
         
         // Login first
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(getDriver());
         String username = ConfigReader.getProperty("valid.username");
         String password = ConfigReader.getProperty("valid.password");
         
@@ -111,7 +111,7 @@ public class RecruitmentTests extends BaseTest {
             "Verify candidates table displays on Recruitment page");
         
         // Login first
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(getDriver());
         String username = ConfigReader.getProperty("valid.username");
         String password = ConfigReader.getProperty("valid.password");
         

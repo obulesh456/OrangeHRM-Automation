@@ -19,7 +19,7 @@ public class AddLocationTest extends BaseTest {
         );
 
         // 1. Login with valid credentials
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(getDriver());
         String username = ConfigReader.getProperty("valid.username");
         String password = ConfigReader.getProperty("valid.password");
 
@@ -27,7 +27,7 @@ public class AddLocationTest extends BaseTest {
         ExtentReportManager.getTest().log(Status.INFO, "Logged in successfully");
 
         // 2. Open Add Location form, fill details, and save
-        AddLocationPage addLocationPage = new AddLocationPage(driver);
+        AddLocationPage addLocationPage = new AddLocationPage(getDriver());
         addLocationPage.openAddLocationForm();
         ExtentReportManager.getTest().log(Status.INFO, "Opened Add Location form");
 
