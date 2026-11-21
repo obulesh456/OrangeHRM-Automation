@@ -17,7 +17,7 @@ public class AdminTests extends BaseTest {
     public void testAdminPageAccess() {
         ExtentReportManager.createTest("Admin Page Access Test", "Verify user can access the admin page ");
         //login first
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(getDriver());
         String username = ConfigReader.getProperty("valid.username");
         String password = ConfigReader.getProperty("valid.password");
 
@@ -44,7 +44,7 @@ public class AdminTests extends BaseTest {
     public void testAddEmployee() {
         ExtentReportManager.createTest("Add employee Test", "Verify admin can add a new employee user ");
         //login first
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(getDriver());
         String username = ConfigReader.getProperty("valid.username");
         String password = ConfigReader.getProperty("valid.password");
 

@@ -18,7 +18,7 @@ public class LoginTests extends BaseTest {
     public void testValidLogin() {
         ExtentReportManager.createTest("Valid Login Test", "Test login with valid username and password");
         
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(getDriver());
         ExtentReportManager.getTest().log(Status.INFO, "Navigated to login page");
         
         Assert.assertTrue(loginPage.isLoginPageDisplayed(), "Login page should be displayed");
@@ -49,7 +49,7 @@ public class LoginTests extends BaseTest {
     public void testInvalidLogin() {
         ExtentReportManager.createTest("Invalid Login Test", "Test login with invalid credentials");
         
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(getDriver());
         ExtentReportManager.getTest().log(Status.INFO, "Navigated to login page");
         
         loginPage.login("invalidUser", "invalidPass");
@@ -65,7 +65,7 @@ public class LoginTests extends BaseTest {
     public void testEmptyCredentials() {
         ExtentReportManager.createTest("Empty Credentials Test", "Test login with empty username and password");
         
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(getDriver());
         ExtentReportManager.getTest().log(Status.INFO, "Navigated to login page");
         
         loginPage.enterUsername("");
@@ -81,7 +81,7 @@ public class LoginTests extends BaseTest {
     public void testLoginPageElements() {
         ExtentReportManager.createTest("Login Page Elements Test", "Verify all login page elements are present");
         
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(getDriver());
         ExtentReportManager.getTest().log(Status.INFO, "Navigated to login page");
         
         Assert.assertTrue(loginPage.verifyLoginPageElements(), 
@@ -93,7 +93,7 @@ public class LoginTests extends BaseTest {
     public void testLogout() {
         ExtentReportManager.createTest("Logout Test", "Test logout functionality");
         
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(getDriver());
         
         String username = ConfigReader.getProperty("valid.username");
         String password = ConfigReader.getProperty("valid.password");

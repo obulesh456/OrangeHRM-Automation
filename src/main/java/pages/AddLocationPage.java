@@ -17,7 +17,7 @@ public class AddLocationPage {
     private WebDriverWait wait;
 
     // 1. Navigation Locators
-    private By adminMenu = By.xpath("//a[.//span[normalize-space()='Admin']]");
+    private By adminMenu = By.xpath("//a[.//span[normalize-space()='Adminuui']]");
     private By moreTab = By.xpath("//li[contains(@class,'oxd-topbar-body-nav-tab') and .//span[normalize-space()='More']]");
     private By organizationTab = By.xpath("//*[contains(@class,'oxd-topbar-body-nav-tab') and normalize-space()='Organization' or contains(@class,'oxd-topbar-body-nav-tab-item') and normalize-space()='Organization']");
     private By locationsMenuItem = By.xpath("//a[normalize-space()='Locations']");
@@ -29,6 +29,7 @@ public class AddLocationPage {
     private By stateInput = By.xpath("//label[contains(normalize-space(.),'State/Province')]/ancestor::div[contains(@class,'oxd-input-group')]//input");
     private By zipInput = By.xpath("//label[contains(normalize-space(.),'Zip/Postal Code')]/ancestor::div[contains(@class,'oxd-input-group')]//input");
     private By countryDropdown = By.xpath("//label[contains(normalize-space(.),'Country')]/ancestor::div[contains(@class,'oxd-input-group')]//div[contains(@class,'oxd-select-text')]");
+    private By countryListbox = By.xpath("//div[@role='listbox']");
     private By countryOptions = By.xpath("//div[@role='listbox']//div[@role='option']");
     private By phoneInput = By.xpath("//label[contains(normalize-space(.),'Phone')]/ancestor::div[contains(@class,'oxd-input-group')]//input");
     private By faxInput = By.xpath("//label[contains(normalize-space(.),'Fax')]/ancestor::div[contains(@class,'oxd-input-group')]//input");
@@ -100,6 +101,7 @@ public class AddLocationPage {
     // 7. Country Dropdown Method using findElements
     public void selectCountry(String countryName) {
         clickElement(countryDropdown);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(countryListbox));
         wait.until(currentDriver -> {
             List<WebElement> options = currentDriver.findElements(countryOptions);
 
@@ -118,11 +120,15 @@ public class AddLocationPage {
                         return true;
                     }
                 } catch (StaleElementReferenceException e) {
-                    return false;
+                    break;
                 }
             }
+            WebElement listbox = currentDriver.findElement(countryListbox);
+            ((JavascriptExecutor) currentDriver).executeScript(
+                    "arguments[0].scrollTop += arguments[0].clientHeight;", listbox);
             return false;
         });
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(countryListbox));
         wait.until(currentDriver -> {
             try {
                 WebElement dropdown = currentDriver.findElement(countryDropdown);
@@ -167,6 +173,7 @@ public class AddLocationPage {
     }
 
     public void clickSave() {
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(countryListbox));
         clickElement(saveButton);
     }
 
@@ -203,7 +210,7 @@ public class AddLocationPage {
     }
 
     public String getFieldErrorMessage(String fieldLabel) {
-        By errorLocator = By.xpath("//label[normalize-space(.)='" + fieldLabel + "']/ancestor::div[contains(@class,'oxd-input-group')]//span[contains(@class,'oxd-input-field-error-message')]");
+        By errorLocator = By.xpath("//label[contains(normalize-space(.),'" + fieldLabel + "')]/ancestor::div[contains(@class,'oxd-input-group')]//span[contains(@class,'oxd-input-field-error-message')]");
         return wait.until(currentDriver -> {
             try {
                 List<WebElement> errors = currentDriver.findElements(errorLocator);

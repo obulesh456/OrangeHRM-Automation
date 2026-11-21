@@ -15,14 +15,14 @@ public class AddLocationNegativeTest extends BaseTest {
     private AddLocationPage loginAndOpenAddLocationForm(String testTitle, String description) {
         ExtentReportManager.createTest(testTitle, description);
 
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(getDriver());
         String username = ConfigReader.getProperty("valid.username");
         String password = ConfigReader.getProperty("valid.password");
 
         loginPage.login(username, password);
         ExtentReportManager.getTest().log(Status.INFO, "Logged in successfully");
 
-        AddLocationPage addLocationPage = new AddLocationPage(driver);
+        AddLocationPage addLocationPage = new AddLocationPage(getDriver());
         addLocationPage.openAddLocationForm();
         ExtentReportManager.getTest().log(Status.INFO, "Opened Add Location form");
         return addLocationPage;

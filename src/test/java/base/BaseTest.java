@@ -14,8 +14,10 @@ import utils.LoggerUtils;
  * All test classes should extend this class
  */
 public class BaseTest {
-    
-    protected WebDriver driver;
+
+    protected WebDriver getDriver() {
+        return DriverFactory.getDriver();
+    }
     
     @BeforeSuite
     public void suiteSetup() {
@@ -27,7 +29,7 @@ public class BaseTest {
     @BeforeMethod
     public void setUp() {
         LoggerUtils.info("Setting up test");
-        driver = DriverFactory.initializeDriver();
+        WebDriver driver = DriverFactory.initializeDriver();
         driver.get(ConfigReader.getProperty("url"));
         LoggerUtils.info("Navigated to: " + ConfigReader.getProperty("url"));
     }
@@ -36,6 +38,7 @@ public class BaseTest {
     public void tearDown() {
         LoggerUtils.info("Tearing down test");
         DriverFactory.quitDriver();
+        ExtentReportManager.removeTest();
     }
     
     @AfterSuite
