@@ -2,6 +2,7 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -70,10 +71,21 @@ public class AddLocationPage {
     }
 
     private void typeText(By locator, String text) {
-        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", element);
-        element.clear();
-        element.sendKeys(text);
+        wait.until(currentDriver -> {
+            try {
+                WebElement element = currentDriver.findElement(locator);
+                if (!element.isDisplayed()) {
+                    return false;
+                }
+                ((JavascriptExecutor) currentDriver).executeScript(
+                        "arguments[0].scrollIntoView({block:'center'});", element);
+                element.clear();
+                element.sendKeys(text);
+                return true;
+            } catch (StaleElementReferenceException e) {
+                return false;
+            }
+        });
     }
 
     // 6. Navigation Method
@@ -88,19 +100,37 @@ public class AddLocationPage {
     // 7. Country Dropdown Method using findElements
     public void selectCountry(String countryName) {
         clickElement(countryDropdown);
-        List<WebElement> options = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(countryOptions));
+        wait.until(currentDriver -> {
+            List<WebElement> options = currentDriver.findElements(countryOptions);
 
-        for (WebElement option : options) {
-            if (option.getText().trim().equalsIgnoreCase(countryName)) {
-                ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", option);
+            for (WebElement option : options) {
                 try {
-                    option.click();
-                } catch (Exception e) {
-                    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", option);
+                    if (option.getText().trim().equalsIgnoreCase(countryName)) {
+                        ((JavascriptExecutor) currentDriver).executeScript(
+                                "arguments[0].scrollIntoView({block:'center'});", option);
+                        try {
+                            option.click();
+                        } catch (StaleElementReferenceException e) {
+                            return false;
+                        } catch (Exception e) {
+                            ((JavascriptExecutor) currentDriver).executeScript("arguments[0].click();", option);
+                        }
+                        return true;
+                    }
+                } catch (StaleElementReferenceException e) {
+                    return false;
                 }
-                break;
             }
-        }
+            return false;
+        });
+        wait.until(currentDriver -> {
+            try {
+                WebElement dropdown = currentDriver.findElement(countryDropdown);
+                return dropdown.getText().trim().equalsIgnoreCase(countryName);
+            } catch (StaleElementReferenceException e) {
+                return false;
+            }
+        });
     }
 
     // 8. Fill Form and Save Methods
@@ -173,9 +203,18 @@ public class AddLocationPage {
     }
 
     public String getFieldErrorMessage(String fieldLabel) {
-        By errorLocator = By.xpath("//label[contains(normalize-space(.),'" + fieldLabel + "')]/ancestor::div[contains(@class,'oxd-input-group')]//span[contains(@class,'oxd-input-field-error-message')]");
-        WebElement errorElement = wait.until(ExpectedConditions.visibilityOfElementLocated(errorLocator));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", errorElement);
-        return errorElement.getText().trim();
+        By errorLocator = By.xpath("//label[normalize-space(.)='" + fieldLabel + "']/ancestor::div[contains(@class,'oxd-input-group')]//span[contains(@class,'oxd-input-field-error-message')]");
+        return wait.until(currentDriver -> {
+            try {
+                List<WebElement> errors = currentDriver.findElements(errorLocator);
+                if (errors.isEmpty() || !errors.get(0).isDisplayed()) {
+                    return null;
+                }
+                String message = errors.get(0).getText().trim();
+                return message.isEmpty() ? null : message;
+            } catch (StaleElementReferenceException e) {
+                return null;
+            }
+        });
     }
 }
