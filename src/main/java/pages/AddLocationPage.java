@@ -10,7 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
 
-public class ADDLOCATIONPAGE {
+public class AddLocationPage {
 
     private WebDriver driver;
     private WebDriverWait wait;
@@ -40,7 +40,7 @@ public class ADDLOCATIONPAGE {
     private By toastMessageText = By.xpath("//div[contains(@class,'oxd-toast--success')]//p[contains(@class,'oxd-text--toast-message')]");
 
     // 4. Constructor
-    public ADDLOCATIONPAGE(WebDriver driver) {
+    public AddLocationPage(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(30));
     }
