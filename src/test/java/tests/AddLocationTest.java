@@ -4,7 +4,7 @@ import base.BaseTest;
 import com.aventstack.extentreports.Status;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import pages.ADDLOCATIONPAGE;
+import pages.AddLocationPage;
 import pages.LoginPage;
 import utils.ConfigReader;
 import utils.ExtentReportManager;
@@ -24,7 +24,7 @@ public class AddLocationTest extends BaseTest {
         ExtentReportManager.getTest().log(Status.INFO, "Logged in successfully");
 
         // 2. Open Add Location form, fill details, and save
-        ADDLOCATIONPAGE addLocationPage = new ADDLOCATIONPAGE(driver);
+        AddLocationPage addLocationPage = new AddLocationPage(driver);
         addLocationPage.openAddLocationForm();
         ExtentReportManager.getTest().log(Status.INFO, "Opened Add Location form");
 
