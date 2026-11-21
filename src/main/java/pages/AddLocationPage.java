@@ -17,7 +17,7 @@ public class AddLocationPage {
     private WebDriverWait wait;
 
     // 1. Navigation Locators
-    private By adminMenu = By.xpath("//a[.//span[normalize-space()='Admin']]");
+    private By adminMenu = By.xpath("//a[.//span[normalize-space()='Adminuui']]");
     private By moreTab = By.xpath("//li[contains(@class,'oxd-topbar-body-nav-tab') and .//span[normalize-space()='More']]");
     private By organizationTab = By.xpath("//*[contains(@class,'oxd-topbar-body-nav-tab') and normalize-space()='Organization' or contains(@class,'oxd-topbar-body-nav-tab-item') and normalize-space()='Organization']");
     private By locationsMenuItem = By.xpath("//a[normalize-space()='Locations']");
