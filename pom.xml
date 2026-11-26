@@ -23,6 +23,8 @@
         <poi.version>5.2.5</poi.version>
         <log4j.version>2.22.0</log4j.version>
         <webdrivermanager.version>5.6.2</webdrivermanager.version>
+        <!-- NEW: Allure version -->
+        <allure.version>2.29.1</allure.version>
         <suiteXmlFile>testng.xml</suiteXmlFile>
     </properties>
 
@@ -54,6 +56,13 @@
             <groupId>com.aventstack</groupId>
             <artifactId>extentreports</artifactId>
             <version>${extentreports.version}</version>
+        </dependency>
+
+        <!-- NEW: Allure for TestNG (collects results for the Allure report) -->
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-testng</artifactId>
+            <version>${allure.version}</version>
         </dependency>
 
         <!-- Apache POI for Excel -->
@@ -116,6 +125,13 @@
                         <suiteXmlFile>${suiteXmlFile}</suiteXmlFile>
                     </suiteXmlFiles>
                 </configuration>
+            </plugin>
+
+            <!-- NEW: Allure plugin (turns results into an HTML report) -->
+            <plugin>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-maven</artifactId>
+                <version>2.12.0</version>
             </plugin>
         </plugins>
     </build>
